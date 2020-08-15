@@ -22,7 +22,7 @@ class ContratoController {
 
     async mongoDBConnect(){
 
-        await mongoose.connect('mongodb://127.0.0.1:27017/adonisangular', {useNewUrlParser: true, useMongoClient: true});
+        await mongoose.connect('mongodb://127.0.0.1:27017/adonisangular', {useNewUrlParser: true, useMongoClient: true, useUnifiedTopology: true});
     
     }
 
