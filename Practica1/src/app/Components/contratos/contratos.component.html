@@ -1,0 +1,139 @@
+<!-- Navbar -->
+
+<div class="container">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav mr-12">
+        <a class="nav-link active text-primary" href="/home"><span>Inicio</span></a>
+        <a class="nav-link active text-primary" href="/mostrar-empresa"><span>Empleados</span></a>
+        <a class="nav-link active text-primary" href="/mostrar-company"><span>Empresas</span></a>
+        <a class="nav-link active text-primary" href="/contratos"><span>Detalle de Contratos</span></a>
+      </div>
+      <div class="navbar-nav" align="right">
+        <a class="nav-link  text-danger"  href="/login" (click)="logout()"><span>Logout</span></a>
+      </div>
+    </div>
+  </nav>
+</div>
+
+<div [ngSwitch]="detail">
+
+  <div *ngSwitchCase="true">
+
+    <div [ngSwitch]="component">
+
+      <div class="container mt-2" *ngSwitchCase="true">
+        <div class="card bg-primary text-light text-center">
+          <div class="card-body">
+            <div><h5>Contratos del Empleado</h5></div>
+          </div>
+        </div>
+        <div class="card bg-light mt-2">
+          <div class="card-body text-center">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Id Contrato</th>
+                  <th scope="col">Empresa</th>
+                  <th scope="col">Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let contrato of contratos_array">
+                  <th scoope="row">{{contrato._id}}</th>
+                  <td>{{contrato.nombre_empresa}}</td>
+                  <td class="form-group">
+                    <button (click)="showContrato(contrato)" class="btn btn-info">Detalles</button>
+                    <button class="btn btn-primary mx-2" type="button" (click)="getContrato(contrato)" [class.active]="contrato == upContrato" >Editar</button>
+                    <button class="btn btn-danger" type="button" (click)="deleteContrato(contrato)">Eliminar</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+              <button (click)="resetComponents()" class="btn btn-warning text-light">Regresar</button>
+          </div>
+        </div>
+      </div>
+
+      <div *ngSwitchCase="false">
+        <div class="container mt-2">
+          <div class="card bg-primary text-light text-center">
+            <div class="card-body">
+              <div><h5>Modificar Contrato</h5></div>
+            </div>
+          </div>
+          <div class="card bg-light mt-2">
+            <div class="card-body text-center">
+              <div class="card bg-light mt-2">
+                <div class="card-body text-center">
+                  <div class="my-4"><h5>Contrato: {{upContrato._id}}</h5></div>
+                  <div class="form-group">
+                    <input type="number" [(ngModel)]="upContrato.empleado_id"  placeholder="Id empleado" readonly class="form-control">
+                  </div>
+                  <div class="form-group">
+                    <input type="text" [(ngModel)]="upContrato.duracion_contrato" placeholder="Duración del contrato" class="form-control">
+                  </div>
+                  <div class="form-group">
+                    <input type="text" [(ngModel)]="upContrato.puesto" placeholder="Puesto" class="form-control">
+                  </div>
+                  <div class="form-group">
+                    <input type="number" [(ngModel)]="upContrato.sueldo" placeholder="Sueldo" class="form-control">
+                  </div>
+                  <div class="form-group">
+                    <input type="text"  [(ngModel)]="upContrato.nombre_empresa" placeholder="Nombre de la empresa" class="form-control">
+                  </div>
+                    <div class="form-group">
+                      <button (click)="actualizarContrato(upContrato)" class="btn btn-primary">Modificar</button>
+                      <button (click)="backToContratosPorEmpleado()" class="btn btn-warning mx-2 text-light">Cancelar</button>
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container mt-2" *ngSwitchDefault>
+        <div class="card bg-primary text-light text-center">
+          <div class="card-body">
+            <div><h5>Buscar Contratos por Empleado</h5></div>
+          </div>
+        </div>
+        <div class="card bg-light mt-2">
+          <div class="card-body text-center">
+            <div class="form-group">
+              <input id="form" type="number" [(ngModel)]="findContrato.empleado_id"  placeholder="Id empleado" class="form-control">
+            </div>
+            <button (click)="mostrarContratos(findContrato.empleado_id)" class="btn btn-primary">Buscar</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+      
+    
+
+  <div class="container mt-2 text-center" *ngSwitchCase="false">
+    <div class="card bg-primary text-light">
+      <div class="card-body">
+        <div><h5 class="card-title">Contrato: {{upContrato._id}}</h5></div>
+      </div>
+    </div>
+    <div class="card-body  bg-light mt-2">
+      <p class="card-text" *ngSwitchCase="true"> Id: {{upContrato._id}}</p>
+      <p class="card-text" *ngSwitchCase="true"> Id: {{upContrato.empleado_id}}</p>
+      <p class="card-text">Duración: {{upContrato.duracion_contrato}}</p>
+      <p class="card-text">Puesto: {{upContrato.puesto}}</p>
+      <p class="card-text">Sueldo: {{upContrato.sueldo}}</p>
+      <p class="card-text">Empresa: {{upContrato.nombre_empresa}}</p> 
+      <button class="btn btn-primary" type="button" (click)="getContratoForDetail(upContrato)" >Editar</button>       
+      <button class="btn btn-warning text-light mx-2" (click)="backToContratosPorEmpleado()">regresar</button>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,143 @@
+
+<!-- Navbar -->
+
+<div class="container">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav mr-12">
+        <a class="nav-link active text-primary" href="/home"><span>Inicio</span></a>
+        <a class="nav-link active text-primary" href="/mostrar-empresa"><span>Empleados</span></a>
+        <a class="nav-link active text-primary" href="/mostrar-company"><span>Empresas</span></a>
+        <a class="nav-link active text-primary" href="/contratos"><span>Detalle de Contratos</span></a>
+      </div>
+      <div class="navbar-nav" align="right">
+        <a class="nav-link  text-danger"  href="/login" (click)="logout()"><span>Logout</span></a>
+      </div>
+    </div>
+  </nav>
+</div>
+
+<div [ngSwitch]="component">
+
+  <div class="container mt-2" *ngSwitchCase="true">
+    <div class="card card bg-primary text-light text-center">
+      <div class="card-body">
+        <div><h5>Nueva Empresa</h5></div>
+      </div>
+    </div>
+    <div class="card bg-light mt-2">
+      <div class="card-body text-center">
+        <div class="form-group">
+          <input type="text" [(ngModel)]="empresas.nombre"  placeholder="Nombre Empresa" class="form-control">
+        </div>
+        <div class="form-group">
+          <input type="text" [(ngModel)]="empresas.rfc" placeholder="RFC" class="form-control">
+        </div>
+        <div class="form-group">
+          <input type="number" [(ngModel)]="empresas.telefono" placeholder="Telefono" class="form-control">
+        </div>
+        <div class="form-group">
+          <input type="text" [(ngModel)]="empresas.direccion" placeholder="Direccion" class="form-control">
+        </div>
+        <button (click)="nuevaEmpresa()" class="btn btn-primary mx-2">Agregar Empresa</button>
+        <button (click)="resetComponents()" class="btn btn-warning text-light">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="container mt-2" *ngSwitchCase="false">
+    <div class="card bg-primary text-light text-center">
+      <div class="card-body">
+          <div><h5>Modificar Empresa</h5></div>
+      </div>
+    </div>
+    <div class="card bg-light mt-2">
+      <div class="card-body text-center">
+        <div class="card bg-light mt-2">
+          <div class="card-body text-center">
+            <div class="my-4"><h5>Empresa: {{upEmpresa.nombre}}</h5></div>
+            <div class="form-group">
+              <input type="text" [(ngModel)]="upEmpresa.id"  placeholder="Id Empresa" readonly class="form-control">
+            </div>
+            <div class="form-group">
+              <input type="text" [(ngModel)]="upEmpresa.nombre"  placeholder="Nombre Empresa" class="form-control">
+            </div>
+            <div class="form-group">
+              <input type="text" [(ngModel)]="upEmpresa.rfc" placeholder="RFC" class="form-control">
+            </div>
+            <div class="form-group">
+              <input type="number" [(ngModel)]="upEmpresa.telefono" placeholder="Telefono" class="form-control">
+            </div>
+            <div class="form-group">
+              <input type="text" [(ngModel)]="upEmpresa.direccion" placeholder="Direccion" class="form-control">
+            </div>
+            <button (click)="actualizarEmpresa(upEmpresa)" class="btn btn-primary mx-2">Modificar</button>
+            <button (click)="resetComponents()" class="btn btn-warning text-light">Cancelar</button>
+          </div>
+        </div>
+      </div>
+    </div> 
+  </div>
+
+  
+  <div *ngSwitchDefault>
+  
+    <div [ngSwitch]="data">
+      <div *ngSwitchCase="false">
+        <div class="container mt-2">
+          <div class="card bg-primary text-light text-center">
+            <div class="card-body">
+              <div><h5>Listado de Empresas</h5></div>
+            </div>
+          </div>
+        <div class="card bg-light mt-2">
+          <div class="card-body text-center">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Id Empresa</th>
+                <th scope="col">Empresa</th>
+                <th scope="col">Telefono</th>
+                <th scope="col">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let empresa of empresas_array">
+                    <td scoope="row">{{empresa.id}}</td>
+                    <td>{{empresa.nombre}}</td>
+                    <td>{{empresa.telefono}}</td>
+                    <td class="form-group">
+                      <button class="btn btn-info" type="button" (click)="showEmpresa(empresa)">Detalles</button>
+                      <button class="btn btn-primary mx-2" type="button" (click)="getEmpresa(empresa)">Editar</button>
+                      <button class="btn btn-danger" type="button" (click)="deleteEmpresa(empresa.id)">Eliminar</button>
+                    </td>
+                </tr>
+            </tbody>
+          </table>
+          <button (click)="initNewEmpresa()" class="btn btn-warning text-light">Alta Empresa</button>
+          </div>
+        </div>
+      </div>
+    </div>
+   
+
+    <div class="container mt-2 text-center" *ngSwitchCase="true">
+      <div class="card bg-primary text-light">
+        <div class="card-body">
+          <div><h5 class="card-title">Empresa: {{upEmpresa.nombre}}</h5></div>
+        </div>
+      </div>
+      <div class="card-body  bg-light mt-2">
+        <p class="card-text" *ngSwitchCase="false"> Id: {{upEmpresa.id}}</p>
+        <p class="card-text">RFC: {{upEmpresa.rfc}}</p>
+        <p class="card-text">Dirección: {{upEmpresa.direccion}}</p>
+        <p class="card-text">Telefono: {{upEmpresa.telefono}}</p>
+        <button class="btn btn-warning text-light" (click)="resetComponents()">regresar</button>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,200 @@
+<div class="container">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav mr-12">
+        <a class="nav-link active text-primary" href="/home"><span>Inicio</span></a>
+        <a class="nav-link active text-primary" href="/mostrar-empresa"><span>Empleados</span></a>
+        <a class="nav-link active text-primary" href="/mostrar-company"><span>Empresas</span></a>
+        <a class="nav-link active text-primary" href="/contratos"><span>Detalle de Contratos</span></a>
+      </div>
+      <div class="navbar-nav" align="right">
+        <a class="nav-link  text-danger"  href="/login" (click)="logout()"><span>Logout</span></a>
+      </div>
+    </div>
+  </nav>
+</div>
+
+<div [ngSwitch]="interfaz">
+  <div [ngSwitch]="component" *ngSwitchCase="true">
+
+    <div *ngSwitchCase="true">
+      <div class="container mt-2">
+        <div class="card card bg-primary text-light text-center">
+          <div class="card-body">
+            <div><h5>Nuevo Empleado</h5></div>
+          </div>
+        </div>
+        <div class="card bg-light mt-2">
+          <div class="card-body text-center">
+            <div class="form-group">
+              <input type="text" [(ngModel)]="empleados.nombre"  placeholder="Nombre empleado" class="form-control">
+            </div>
+            <div class="form-group">
+              <input type="text" [(ngModel)]="empleados.apellido_p" placeholder="Apellido Paterno" class="form-control">
+            </div>
+            <div class="form-group">
+              <input type="text" [(ngModel)]="empleados.apellido_m" placeholder="Apellido Materno" class="form-control">
+            </div>
+            <div class="form-group">
+              <input type="text" [(ngModel)]="empleados.sexo" placeholder="Sexo" class="form-control">
+            </div>
+            <div class="form-group">
+              <input type="number" [(ngModel)]="empleados.telefono" placeholder="Telefono" class="form-control">
+            </div>
+            <div class="form-group">
+              <input type="text" [(ngModel)]="empleados.direccion" placeholder="Direccion" class="form-control">
+            </div>
+            <div class="form-group">
+              <input type="text" [(ngModel)]="empleados.correo" placeholder="Correo" class="form-control">
+            </div>
+            <button (click)="nuevoEmpleado()" class="btn btn-primary mx-2">Agregar Empleado</button>
+            <button (click)="resetComponents()" class="btn btn-warning text-light">Cancelar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngSwitchCase="false">
+      <div class="container mt-2">
+        <div class="card bg-primary text-light text-center">
+          <div class="card-body">
+              <div><h5>Modificar Empleado</h5></div>
+          </div>
+        </div>
+        <div class="card bg-light mt-2">
+          <div class="card-body text-center">
+            <div class="card bg-light mt-2">
+              <div class="card-body text-center">
+                <div class="my-4"><h5>Empleado: {{upempleado.nombre}} {{upempleado.apellido_p}} {{empleados.apellido_m}}</h5></div>
+                <div class="form-group">
+                  <input type="text" [(ngModel)]="upempleado.id"  placeholder="Id Empleado" readonly class="form-control">
+                </div>
+                <div class="form-group">
+                  <input type="text" [(ngModel)]="upempleado.nombre"  placeholder="Nombre Empleado" class="form-control">
+                </div>
+                <div class="form-group">
+                  <input type="text" [(ngModel)]="upempleado.apellido_p" placeholder="Apellido Paterno" class="form-control">
+                </div>
+                <div class="form-group">
+                  <input type="text" [(ngModel)]="upempleado.apellido_m" placeholder="Apellido Materno" class="form-control">
+                </div>
+                <div class="form-group">
+                  <input type="text" [(ngModel)]="upempleado.sexo" placeholder="Sexo" class="form-control">
+                </div>
+                <div class="form-group">
+                  <input type="text" [(ngModel)]="upempleado.telefono" placeholder="Telefono" class="form-control">
+                </div>
+                <div class="form-group">
+                  <input type="text" [(ngModel)]="upempleado.direccion" placeholder="Direccion" class="form-control">
+                </div>
+                <div class="form-group">
+                  <input type="text" [(ngModel)]="upempleado.correo" placeholder="Apellido Paterno" class="form-control">
+                </div>
+                <button (click)="actualizarempleado(upempleado)" class="btn btn-primary mx-2">Modificar</button>
+                <button (click)="resetComponents()" class="btn btn-warning text-light">Cancelar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngSwitchDefault>
+      <div class="container mt-2">
+        <div class="card bg-primary text-light text-center">
+          <div class="card-body">
+              <div><h5>Listado de Empleados</h5></div>
+          </div>
+        </div>
+        <div class="card bg-light mt-2">
+          <div class="card-body text-center">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Id Empleado</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Primer Apellido</th>
+                <th scope="col">Segundo Apellido</th>
+                <th scope="col">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let empleado of empleados_array">
+                    <td scoope="row">{{empleado.id}}</td>
+                    <td>{{empleado.nombre}}</td>
+                    <td>{{empleado.apellido_p}}</td>
+                    <td>{{empleado.apellido_m}}</td>
+                    <td class="form-group">
+                      <button (click)="showEmpleado(empleado)" class="btn btn-info">Detalle</button>
+                      <button class="btn btn-primary mx-2" type="button" (click)="getEmpleado(empleado)">Editar</button>
+                      <button class="btn btn-danger" type="button" (click)="deleteEmpleado(empleado.id)">Eliminar</button>
+                    </td>
+                </tr>
+            </tbody>
+          </table>
+          <button (click)="initNewEmpleado()" class="btn btn-warning text-light">Alta Empleado</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div *ngSwitchDefault>
+    <div [ngSwitch]="data">
+      <div *ngSwitchCase="true">
+        <div class="container mt-2 text-center">
+          <div class="card bg-primary text-light">
+            <div class="card-body">
+                <div><h5 class="card-title">Empleado: {{upempleado.nombre}} {{upempleado.apellido_p}} {{upempleado.apellido_m}}</h5></div>
+            </div>
+          </div>
+          <div class="card-body  bg-light mt-2">
+              <p class="card-text" *ngSwitchCase="false"> Id: {{upempleado.id}}</p>
+              <p class="card-text">Dirección: {{upempleado.direccion}}</p>
+              <p class="card-text">Telefono: {{upempleado.telefono}}</p>
+              <p class="card-text">Sexo: {{upempleado.sexo}}</p>
+              <p class="card-text">Correo: {{upempleado.correo}}</p>
+              <button (click)="newContratoComponent(upempleado)" class="btn btn-success mx-2">Alta Contrato</button>
+              <button class="btn btn-warning text-light" (click)="resetComponents()">regresar</button>
+          </div>
+        </div>
+      </div>
+
+      <div *ngSwitchCase="false">
+        <div class="container mt-2">
+          <div class="card card bg-primary text-light text-center">
+            <div class="card-body">
+              <div><h5>Nuevo Contrato para: {{upempleado.nombre}} {{upempleado.apellido_p}} {{upempleado.apellido_m}}</h5></div>
+            </div>
+          </div>
+          <div class="card bg-light mt-2">
+            <div class="card-body text-center">
+              <div class="form-group" *ngSwitchCase="true">
+                <input type="text" [(ngModel)]="contratos_empleado.empleado_id"  placeholder="Id empleado" value="{{upempleado.id}}" readonly class="form-control">
+              </div>
+              <div class="form-group">
+                <input type="text" [(ngModel)]="contratos_empleado.duracion_contrato" placeholder="Duración del contrato" class="form-control">
+              </div>
+              <div class="form-group">
+                <input type="text" [(ngModel)]="contratos_empleado.puesto" placeholder="Puesto" class="form-control">
+              </div>
+              <div class="form-group">
+                <input type="text" [(ngModel)]="contratos_empleado.sueldo" placeholder="Sueldo" class="form-control">
+              </div>
+              <div class="form-group">
+                <input type="text" [(ngModel)]="contratos_empleado.nombre_empresa" placeholder="Nombre Empresa" class="form-control">
+              </div>
+              <button (click)="nuevoContrato(upempleado.id)" class="btn btn-primary mx-2">Agregar Contrato</button>
+              <button (click)="backToShowEmpleado()" class="btn btn-warning text-light">Cancelar</button>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  <div>
+
+</div>
