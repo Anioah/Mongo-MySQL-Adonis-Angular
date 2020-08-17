@@ -53,6 +53,8 @@ export class ContratosComponent{
 
     this.mostrarContratos(contrato._id);
 
+    window.location.reload();
+
 
   }
 

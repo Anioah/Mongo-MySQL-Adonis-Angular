@@ -1,6 +1,7 @@
 'use strict'
 
-const ContratoController = require('../app/Controllers/Http/ContratoController');
+//const ContratoController = require('../app/Controllers/Http/ContratoController');
+const Contrato = use('App/Models/Contrato')
 
 /*
 |--------------------------------------------------------------------------
